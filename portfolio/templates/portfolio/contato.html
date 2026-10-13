@@ -1,0 +1,52 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+
+{% block title %}Contato e currículo · Jônatas Farias{% endblock %}
+{% block description %}Contato e currículo em PDF de {{ pessoa.nome }}.{% endblock %}
+
+{% block conteudo %}
+<div class="panel">
+  <div class="sec-head" style="margin-bottom:0">
+    <p class="eyebrow">Vamos conversar</p>
+    <h1 class="h2-like">Contato e currículo</h1>
+  </div>
+
+  <div class="two">
+    <div>
+      <h2 class="eyebrow" style="margin-bottom:12px">Onde me encontrar</h2>
+      <ul class="contact-list">
+        {% for c in contatos %}
+          <li>
+            <span class="k">{{ c.rotulo }}</span>
+            {% if c.link %}
+              <a class="v" href="{{ c.link }}"{% if c.link|slice:":4" == "http" %} target="_blank" rel="noopener"{% endif %}>{{ c.valor }}</a>
+            {% else %}
+              <span class="v">{{ c.valor }}</span>
+            {% endif %}
+            {% if c.copiar %}
+              <button type="button" class="copy" data-copiar="{{ c.valor }}">Copiar</button>
+            {% else %}
+              <span></span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="cv">
+      <div class="file">
+        <div class="doc-icon" aria-hidden="true">PDF</div>
+        <div>
+          <h2>Currículo</h2>
+          <p class="mono meta-cv">{{ pessoa.curriculo_info }}</p>
+        </div>
+      </div>
+      <p>Formação, experiência, habilidades e cursos, pronto para imprimir ou anexar.</p>
+      <div class="actions">
+        <a class="btn primary" href="{% url 'curriculo' %}">Baixar currículo (PDF)</a>
+        <a class="btn" href="{% static pessoa.curriculo_arquivo %}" target="_blank" rel="noopener">Ver no navegador</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+
+{% block title %}Portfólio Jônatas Farias{% endblock %}
+
+{% block conteudo %}
+<div class="panel">
+
+  <section class="hero" aria-label="Apresentação">
+    <img class="foto" src="{% static pessoa.foto %}" alt="{{ pessoa.foto_alt }}" width="720" height="720">
+    <div>
+      <p class="eyebrow">{{ pessoa.titulo }}</p>
+      <h1>{{ pessoa.nome }}</h1>
+      <p class="role">{{ pessoa.frase }}</p>
+      {% for paragrafo in pessoa.sobre %}
+        <p class="lead">{{ paragrafo }}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <dl class="ficha">
+    {% for rotulo, valor in ficha %}
+      <div><dt>{{ rotulo }}</dt><dd>{{ valor }}</dd></div>
+    {% endfor %}
+  </dl>
+
+  <section aria-labelledby="h-projetos" id="projetos">
+    <div class="sec-head">
+      <p class="eyebrow">Power BI · Python · Excel</p>
+      <h2 id="h-projetos">Projetos</h2>
+      <p>Escolha uma ferramenta para filtrar os projetos.</p>
+    </div>
+
+    <nav class="filters" aria-label="Filtrar projetos por ferramenta">
+      {% for chave, nome in filtros %}
+        <a class="chip" href="?ferramenta={{ chave }}#projetos"{% if chave == filtro_ativo %} aria-current="true"{% endif %}>{{ nome }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="projects">
+      {% for p in projetos %}
+        <article class="card{% if p.pendente %} pending{% endif %}">
+          <div class="top">
+            <span class="stack">{{ p.stack }}</span>
+            {% if p.pendente %}<span class="badge">Em breve</span>{% endif %}
+          </div>
+          <h3>{{ p.titulo }}</h3>
+          <p>{{ p.texto }}</p>
+          {% if p.visuais %}
+            <ul class="visuais" aria-label="O que o projeto mostra">
+              {% for v in p.visuais %}<li>{{ v }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+          <div class="acoes">
+            {% if p.incorporado %}
+              <button type="button" class="btn primary" data-painel-url="{{ p.url }}" data-painel-titulo="{{ p.titulo }}">Ver painel aqui</button>
+              <a class="btn" href="{{ p.url }}" target="_blank" rel="noopener">Abrir em nova aba</a>
+            {% elif p.url %}
+              <a class="btn" href="{{ p.url }}" target="_blank" rel="noopener">Abrir projeto</a>
+            {% elif not p.download %}
+              <span class="btn" aria-disabled="true">Link em breve</span>
+            {% endif %}
+            {% if p.download and p.slug %}
+              <a class="btn primary" href="{% url 'baixar' p.slug %}">{{ p.download_rotulo|default:"Baixar arquivo" }}</a>
+            {% endif %}
+          </div>
+          {% if p.meta %}<p class="meta">{{ p.meta }}</p>{% endif %}
+        </article>
+      {% endfor %}
+    </div>
+    <p class="hint">Os painéis de Power BI abrem aqui mesmo, em uma janela. Os apps do Streamlit abrem no site de origem, em uma nova aba.</p>
+
+    <dialog class="painel" id="painel" aria-labelledby="painel-titulo">
+      <div class="painel-topo">
+        <h2 id="painel-titulo">Painel</h2>
+        <form method="dialog"><button class="copy" autofocus>Fechar</button></form>
+      </div>
+      <iframe id="painel-quadro" title="Painel de Power BI" src="about:blank" allowfullscreen referrerpolicy="no-referrer"></iframe>
+      <div class="painel-rodape">
+        <span class="so-celular">No celular, o painel fica melhor em uma nova aba.</span>
+        <a id="painel-link" href="#" target="_blank" rel="noopener">Abrir em nova aba</a>
+      </div>
+    </dialog>
+  </section>
+
+  <section aria-labelledby="h-trajetoria">
+    <div class="sec-head">
+      <p class="eyebrow">Do mais recente ao mais antigo</p>
+      <h2 id="h-trajetoria">Trajetória</h2>
+    </div>
+    <ul class="timeline">
+      {% for t in trajetoria %}
+        <li>
+          <span class="when">{{ t.quando }}</span>
+          <div>
+            <h3>{{ t.titulo }}{% if t.atual %} <span class="tag-now">Atual</span>{% endif %}</h3>
+            <p class="org">{{ t.org }}</p>
+            <ul class="itens">
+              {% for item in t.itens %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section aria-labelledby="h-ferramentas">
+    <div class="sec-head">
+      <p class="eyebrow">O que uso no dia a dia</p>
+      <h2 id="h-ferramentas">Ferramentas</h2>
+    </div>
+    <div class="tools">
+      {% for nome, texto in ferramentas %}
+        <div class="tool"><h3>{{ nome }}</h3><p>{{ texto }}</p></div>
+      {% endfor %}
+    </div>
+    <ul class="visuais competencias" aria-label="Competências">
+      {% for c in competencias %}<li>{{ c }}</li>{% endfor %}
+    </ul>
+  </section>
+
+  <section aria-labelledby="h-formacao">
+    <div class="sec-head">
+      <p class="eyebrow">Graduação e cursos</p>
+      <h2 id="h-formacao">Formação</h2>
+    </div>
+    <ul class="timeline">
+      <li>
+        <span class="when">{{ formacao.quando }}</span>
+        <div><h3>{{ formacao.titulo }}</h3><p class="org">{{ formacao.org }}</p></div>
+      </li>
+    </ul>
+    <ul class="cursos">
+      {% for curso, escola in cursos %}
+        <li><span>{{ curso }}</span><span class="escola">{{ escola }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+
+</div>
+{% endblock %}

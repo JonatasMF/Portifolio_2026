@@ -1,0 +1,38 @@
+{% load static %}<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>{% block title %}Portfólio Jônatas Farias{% endblock %}</title>
+  <meta name="description" content="{% block description %}Portfólio de {{ pessoa.nome }}: {{ pessoa.titulo }}, projetos de Power BI e Python, contato e currículo.{% endblock %}">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b6a62'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='15' font-weight='700' text-anchor='middle' fill='white'%3EJF%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="{% static 'portfolio/css/style.css' %}">
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="bar">
+    <div class="wrap bar-in">
+      <div class="brand">Jônatas Farias <span>portfólio de dados</span></div>
+      <nav class="tabs" aria-label="Páginas do portfólio">
+        <a class="tab" href="{% url 'perfil' %}"{% if ativa == 'perfil' %} aria-current="page"{% endif %}><small>Página 1 de 2</small>Perfil e projetos</a>
+        <a class="tab" href="{% url 'contato' %}"{% if ativa == 'contato' %} aria-current="page"{% endif %}><small>Página 2 de 2</small>Contato e currículo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="conteudo">
+    {% block conteudo %}{% endblock %}
+  </main>
+
+  <footer>
+    <div class="wrap">© {{ ano }} {{ pessoa.nome }}</div>
+  </footer>
+
+  <script src="{% static 'portfolio/js/site.js' %}" defer></script>
+</body>
+</html>
