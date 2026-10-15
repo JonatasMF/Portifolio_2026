@@ -93,3 +93,7 @@ def curriculo(request):
         filename=content.PESSOA["curriculo_download"],
         content_type="application/pdf",
     )
+
+
+def handler404(request, exception=None):
+    return render(request, "portfolio/404.html", status=404)

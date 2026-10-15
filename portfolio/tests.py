@@ -16,17 +16,17 @@ class PaginasTests(SimpleTestCase):
     def test_filtro_power_bi_esconde_python(self):
         r = self.client.get(reverse("perfil"), {"ferramenta": "power-bi"})
         self.assertContains(r, "Análise de dados de RH")
-        self.assertNotContains(r, "Automação de contratos pendentes")
+        self.assertNotContains(r, "Mercado farmacêutico brasileiro em 2024")
 
     def test_filtro_python_esconde_power_bi(self):
         r = self.client.get(reverse("perfil"), {"ferramenta": "python"})
-        self.assertContains(r, "Automação de contratos pendentes")
+        self.assertContains(r, "Mercado farmacêutico brasileiro em 2024")
         self.assertNotContains(r, "Análise de dados de RH")
 
     def test_filtro_invalido_mostra_todos(self):
         r = self.client.get(reverse("perfil"), {"ferramenta": "qualquer-coisa"})
         self.assertContains(r, "Análise de dados de RH")
-        self.assertContains(r, "Automação de contratos pendentes")
+        self.assertContains(r, "Mercado farmacêutico brasileiro em 2024")
 
     def test_contato_mostra_somente_linhas_preenchidas(self):
         r = self.client.get(reverse("contato"))
@@ -100,7 +100,6 @@ class ProjetosDeBITests(SimpleTestCase):
         self.assertContains(r, "Análise de dados de RH")
         self.assertContains(r, 'class="card"', count=3)
         self.assertNotContains(r, "Dash_Cap03")
-        self.assertNotContains(r, "Automação de contratos pendentes")
 
 
 class DownloadDeProjetoTests(SimpleTestCase):
