@@ -11,7 +11,12 @@ ALLOWED_HOSTS = [h.strip() for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "loca
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+VERCEL_HOSTS = [os.environ.get("VERCEL_URL"), os.environ.get("VERCEL_PROJECT_PRODUCTION_URL")]
+for vercel_host in VERCEL_HOSTS:
+    if vercel_host:
+        ALLOWED_HOSTS.append(vercel_host)
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o.strip()]
+CSRF_TRUSTED_ORIGINS.extend(f"https://{host}" for host in VERCEL_HOSTS if host)
 
 INSTALLED_APPS = [
     "django.contrib.staticfiles",

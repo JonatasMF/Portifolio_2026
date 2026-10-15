@@ -81,14 +81,17 @@ Para trocar a planilha, substitua o arquivo mantendo o mesmo nome (ou mude o nom
 python manage.py test
 ```
 
-## Publicar o site
+## Publicar na Vercel
 
-O projeto usa WhiteNoise para servir os arquivos estáticos, então funciona em serviços como PythonAnywhere ou Render. Em produção, defina estas variáveis de ambiente:
+1. Importe este repositório (`JonatasMF/Portifolio_2026`) em [vercel.com/new](https://vercel.com/new).
+2. Mantenha a pasta raiz do projeto como diretório raiz. O `vercel.json` já configura o build dos arquivos estáticos e a função Django.
+3. Nas configurações do projeto na Vercel, adicione as variáveis de ambiente:
 
 ```
 DJANGO_DEBUG=0
 DJANGO_SECRET_KEY=<uma chave longa e aleatória>
-DJANGO_ALLOWED_HOSTS=seu-dominio.com
 ```
 
-E rode `python manage.py collectstatic --noinput` no deploy. Comando de início (Gunicorn): `gunicorn config.wsgi`.
+A Vercel fornece automaticamente os endereços de preview e produção. Se usar um domínio próprio, inclua-o em `DJANGO_ALLOWED_HOSTS` (separe vários hosts por vírgula). Depois do primeiro deploy, novos pushes para o GitHub geram novos deploys automaticamente.
+
+O site não usa banco de dados. WhiteNoise serve os arquivos estáticos incluídos na função; os arquivos de currículo e projetos continuam disponíveis pelas rotas existentes.
